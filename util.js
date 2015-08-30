@@ -1,10 +1,16 @@
 'use strict';
 
-import { map, range, curry, isUndefined, constant } from 'lodash-fp';
+import { map, range, curry, isUndefined, constant, partial } from 'lodash-fp';
 
 export const log =
   (arg) =>
     console.log(arg) || arg;
+
+export const debug =
+  (arg) => {
+    debugger;
+    return arg;
+  };
 
 export const trace = curry(
   (msg, val) =>
@@ -35,3 +41,10 @@ export const ifThen = curry(
 export const defaultValue = curry(
   (defaultVal, val) =>
     ifThen(isUndefined, constant(defaultVal), val));
+
+export const join = curry(
+  (seperator, array) =>
+    array.join(seperator));
+
+export const printNewLine =
+  partial(log, '\n');

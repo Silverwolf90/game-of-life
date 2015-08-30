@@ -1,10 +1,10 @@
 'use strict';
 
 import { reduce, lt, gt, eq, range, flow } from 'lodash-fp';
-import { generateBoard, createBoard, CellPosition } from './board';
+import { generateBoard, createBoard, printBoard, CellPosition } from './board';
 import { ALIVE, DEAD, isAlive, isDead, SeedCellState } from './cellState';
 import { Rule } from './rule';
-import { or, log } from './util';
+import { or } from './util';
 
 const initializeBoard = createBoard;
 
@@ -27,8 +27,8 @@ const seedCellStates = [
 const runGame =
   (rules, numColumns, numRows, numGenerations, seedCellStates = []) =>
     reduce(
-      flow(log, generateBoard(rules)),
+      flow(printBoard, generateBoard(rules)),
       initializeBoard(numColumns, numRows, seedCellStates, DEAD),
       range(0, numGenerations));
 
-log(runGame(rules, numColumns, numRows, numGenerations, seedCellStates));
+runGame(rules, numColumns, numRows, numGenerations, seedCellStates);

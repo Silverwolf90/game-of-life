@@ -1,10 +1,10 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { mapIndexes2d, defaultValue } from './util';
+import { mapIndexes2d, defaultValue, log, join, printNewLine } from './util';
 import { isAlive, DEAD } from './cellState';
 
-import { size, map, flow, filter, find,
+import { size, map, flow, filter, find, each, constant,
   range, curry, get } from 'lodash-fp';
 
 const Board =
@@ -106,3 +106,16 @@ export const generateBoard = curry(
     mapBoardCellPositions(processCellPosition(rules, board)),
     Board
   )(board));
+
+const printColumn =
+  (column) => flow(
+    join(' '),
+    log
+  )(column);
+
+export const printBoard =
+  (board) => flow(
+    each(printColumn),
+    printNewLine,
+    constant(board)
+  )(board.columns);

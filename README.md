@@ -28,7 +28,6 @@ Ideally (not required, context dependant-- use your discretion):
   * Curry your functions if they have more than argument.
 
 ```javascript
-
 const indexes =
   (array) =>
     range(0, array.length);
@@ -36,7 +35,6 @@ const indexes =
 const mapIndexes = curry(
   (cb, array) =>
     map(cb, indexes(array)));
-  
 ```
 
 ### Function Composition
@@ -44,21 +42,18 @@ const mapIndexes = curry(
 `lodash` provides a function called `flow` ([documentation](https://lodash.com/docs#flow)) which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
 
 ```javascript
-
 const someTransformation = flow(
   mapThingOverArray,
   firstElement,
   doThingToThatFirstElement,
   doYetAnotherThing
 )
-
 ```
 
 Its not obvious what we need to pass to `someTransformation`. We can look at the first function and infer that we need an array, but what does the array need to contain. We'd have to look at the definition of that function to figure it out. So to avoid this problem, simply wrap the composed function in a function that takes one argument and passes it to composed function.
 
 
 ```javascript
-
 const someTransformation =
   (itemsToTransform) => flow(
     mapOverArray,
@@ -66,12 +61,13 @@ const someTransformation =
     doThingToThatFirstElement,
     doYetAnotherThing
   )(itemsToTransform)
-
 ```
 
 Its a bit uglier, but the clarity gained is more important. I see it as similar to the chaining syntax that underscore or lodash provide.
 
-A downside to function composition is that it makes runtime debugging a bit more difficult. However, use `log()` and `trace()` functions in `util.js` and put them after a function to log the output.
+##### Debugging
+
+A downside to function composition is that it makes runtime debugging a bit more difficult. But it's not so bad, use the `log()`, `trace()` and `debug()` functions in `util.js` and put them after a function to debug the output.
 
 ```javascript
 const add10ThenDivideBy5 = flow(add(10), log, divide(5));
@@ -85,6 +81,26 @@ const add10ThenDivideBy5 = flow(add(10), trace('completed addition'), divide(5))
 log(add10ThenDivideBy5(5));
 //=> 'completed addition' 15
 //=> 3
+```
+
+##### Composition Impure functions
+
+Some functions you need to use might mutate the world and not exactly return what you want. Particularly if using libraries or frameworks that you don't control, like `console.log`. Which mutates the world and returns `undefined` which makes it difficult to compose. So to force a return value you can use `lodash.constant` to create a function that always returns the value provide.d Here's an example of a composable logging function (which you'll find in `util.js`):
+
+```javascript
+const log = 
+  (value) => flow(
+    ::console.log,
+    constant(val)
+  )(val)
+```
+
+If the function is guaranteed to return something falsy, then you could do this...
+
+```javascript
+const log =
+  (value) =>
+    console.log(value) || value;
 ```
 
 ### Data Types (not classes)
