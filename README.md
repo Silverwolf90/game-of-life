@@ -8,7 +8,7 @@ that I am not a functional programmer and I have never done any serious
 functional programming, but I have been toying with more FP
 inspired work in my day-to-day style.
 
-Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried callback-first functions.
+Note that I'm using [lodash-fp](https://github.com/lodash/lodash-fp), which has auto-curried callback-first functions.
 
 # Basic Guide
 
@@ -41,7 +41,7 @@ const mapIndexes = curry(
 
 ### Function Composition
 
-`lodash` provides a function called `flow` ([documentation](https://lodash.com/docs#flow) which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
+`lodash` provides a function called `flow` ([documentation](https://lodash.com/docs#flow)) which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
 
 ```javascript
 
@@ -71,7 +71,22 @@ const someTransformation =
 
 Its a bit uglier, but the clarity gained is more important. I see it as similar to the chaining syntax that underscore or lodash provide.
 
-### Data (not classes)
+A downside to function composition is that it makes runtime debugging a bit more difficult. However, use `log()` and `trace()` functions in `util.js` and put them after a function to log the output.
+
+```javascript
+const add10ThenDivideBy5 = flow(add(10), log, divide(5));
+log(add10ThenDivideBy5(5));
+//=> 15
+//=> 3
+```
+
+```javascript
+const add10ThenDivideBy5 = flow(add(10), trace('completed addition'), divide(5));
+//=> 'completed addition 15'
+//=> 3
+```
+
+### Data Types (not classes)
 
 Just use plain javascript objects. We have no classes in the traditional sense. Do not couple data and behavior. Use upper-cased functions that take in their data as arguments and simply wrap them in an object. ES6 shorthand syntax makes this nice.
 
@@ -124,3 +139,10 @@ const greaterThan2 = gt(2);
 mapNumbers(greaterThan2)
 //=> [false, false, true, true]
 ```
+
+### Questions I have
+1. Are the type signatures as comments useful?
+2. Does this style scale?
+3. How well are my files/functions/types organized?
+4. Is the pattern for types going over-board? Do they make the code more clear?
+6. Do you think this is good code? Why or why not?
