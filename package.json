@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "lodash-fp": "~0.10.0"
+    "lodash-fp": "~0.10.2"
   },
   "devDependencies": {
     "eslint": "~0.21.2",

@@ -1,8 +1,6 @@
-### *This is experimental.*
+### *This is experimental. I would love to hear feedback on it.*
 
-So I've been fooling around with a fairly different JavaScript style than what
-I would use at work. As of 8/30 11:50am, this code has not even been run.
-It's merely a stylistic experiment, but it was linted using [eslint](http://eslint.org/).
+So I've been fooling around with a fairly different (and significantly more constrained) JavaScript style. Note that as of 8/30 11:50am, this code has not even been tested or attempted to run. It's merely a fun stylistic experiment, but it was linted using [eslint](http://eslint.org/).
 
 Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried callback-first functions.
 
@@ -17,8 +15,8 @@ Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried call
 * Put arguments that act as function parameters first. Arguments should have data as last argument. 
 
 Ideally (not required, context dependant-- use your discretion):
-  * Function should be one expression.
-    * Don't use return
+  * Functions should be pure (you need a really good reason to not follow this one)
+  * Function should be one expression. Avoid return.
   * Avoid intermediate variables
   * Build functions from smaller functions
   * Curry your functions if they have more than argument.
