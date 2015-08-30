@@ -2,9 +2,17 @@
 
 import { map, range, curry } from 'lodash-fp';
 
+export const log =
+  (arg) =>
+    console.log(arg) || arg;
+
+export const log2 = curry(
+  (arg1, arg2) =>
+    console.log(arg1, arg2) || arg2);
+
 export const or = curry(
-  (func1, func2, ...args) =>
-    func1(...args) || func2(...args));
+  (func1, func2, arg) =>
+    func1(arg) || func2(arg));
 
 export const indexes =
   (array) =>
@@ -14,8 +22,12 @@ export const mapIndexes = curry(
   (cb, array) =>
     map(cb, indexes(array)));
 
-export const map2dIndexes = curry(
+export const mapIndexes2d = curry(
   (cb, array2d) =>
     mapIndexes((x) =>
       mapIndexes((y) =>
         cb(x, y), array2d[x]), array2d));
+
+export const ifThen = curry(
+  (predicate, then, val) =>
+    predicate(val) ? then(val) : val);

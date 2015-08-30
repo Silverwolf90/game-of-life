@@ -1,18 +1,18 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { or, map2dIndexes } from './util';
+import { mapIndexes2d, ifThen, log } from './util';
 import { isAlive, DEAD } from './cellState';
 
-import { size, map, flow, filter, times, constant,
-  range, curry, get, where } from 'lodash-fp';
+import { size, map, flow, filter, constant, find,
+  range, curry, get, isUndefined } from 'lodash-fp';
 
 const Board =
   (columns) => ({
     columns
   });
 
-const CellPosition =
+export const CellPosition =
   (column, row) => ({
     column,
     row
@@ -30,17 +30,19 @@ const neighborOffsets = [
   [-1, +1], [ 0, +1], [+1, +1]
 ];
 
-const getSeedCellState =
+const getSeedCellState = curry(
   (defaultCellState, seedCellStates, cellPosition) => flow(
-    where({ cellPosition }),
-    or(get('cellState'), constant(defaultCellState))
-  )(seedCellStates);
+    find({ cellPosition }),
+    get('cellState'),
+    ifThen(isUndefined, constant(defaultCellState))
+  )(seedCellStates));
 
-const makeColumn =
+const makeColumn = curry(
   (numRows, seedCellStates, defaultCellState, columnIndex) => flow(
+    range(0),
     map(rowIndex => CellPosition(columnIndex, rowIndex)),
     map(getSeedCellState(defaultCellState, seedCellStates))
-  )(range(0, numRows));
+  )(numRows));
 
 const offsetCellPosition = curry(
   ({ column, row }, [x, y]) =>
@@ -56,25 +58,25 @@ const getCellState = curry(
     get([column, row], board.columns) || DEAD);
 
 // CellPosition -> [CellState]
-const getNeighborStates =
+const getNeighborStates = curry(
   (board, cellPosition) => flow(
     makeOffsetCellPositions(neighborOffsets),
     map(getCellState(board))
-  )(cellPosition);
+  )(cellPosition));
 
 // CellPosition -> Number
-const countLiveNeighbors =
+const countLiveNeighbors = curry(
   (board, cellPosition) => flow(
     getNeighborStates(board),
     filter(isAlive),
     size
-  )(cellPosition);
+  )(cellPosition));
 
 // (CellPosition -> A) -> Board -> Board
 const mapCellPositions = curry(
   (onCellPosition, board) =>
-    map2dIndexes((column, row) =>
-      onCellPosition(CellPosition(column, row)), board));
+    mapIndexes2d((column, row) =>
+      onCellPosition(CellPosition(column, row)), board.columns));
 
 const cellPositionToCellData = curry(
   (board, cellPosition) =>
@@ -92,12 +94,15 @@ const processCellPosition = curry(
 // Use to initialize a new Board
 export const createBoard =
   (numColumns, numRows, seedCellStates, defaultCellState) => flow(
-    times(makeColumn(numRows, seedCellStates, defaultCellState)),
+    range(0),
+    map(makeColumn(numRows, seedCellStates, defaultCellState)),
     Board
   )(numColumns);
 
 // The main generation function of the game.
 // [Rule] -> Board -> Board
 export const generateBoard = curry(
-  (rules, board) =>
-    mapCellPositions(processCellPosition(rules, board), board));
+  (rules, board) => flow(
+    mapCellPositions(processCellPosition(rules, board)),
+    Board
+  )(board));

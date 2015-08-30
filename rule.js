@@ -10,15 +10,15 @@ const findRule =
   (cellData, rules) =>
     find(matchesRule(cellData), rules);
 
-// Rule|Null -> CellState|Null
-const maybeRuleResult =
-  (rule) =>
-    get('result', rule) || null;
+// Rule|Undefined -> CellState
+const applyRule =
+  (rule, cellState) =>
+    rule ? get('result', rule) : cellState;
 
 // [Rule] -> CellData -> CellState
 export const applyRulesToCellData = curry(
   (rules, cellData) =>
-    maybeRuleResult(findRule(cellData, rules)) || cellData.cellState);
+    applyRule(findRule(cellData, rules), cellData.cellState));
 
 export const Rule =
   (cellStateCondition, liveNeighborsCondition, result) => ({
