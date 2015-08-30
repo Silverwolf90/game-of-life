@@ -1,0 +1,29 @@
+{
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "globals": {
+    "Bacon": true
+  },
+  "rules": {
+    "strict": 0,
+    "no-underscore-dangle": 0,
+    "quotes": [2, "single"],
+    "key-spacing": [0],
+    "eol-last": false,
+    "no-use-before-define": false,
+    "no-shadow": false,
+    "curly": false,
+    "no-multi-spaces": false,
+    "dot-notation": false,
+    "new-cap": false
+  }
+}
