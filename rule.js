@@ -1,6 +1,6 @@
 'use strict';
 
-import { find, get, curry } from 'lodash-fp';
+import { find, property, curry } from 'lodash-fp';
 
 const matchesRule = curry(
   ({ cellState, liveNeighbors }, { cellStateCondition, liveNeighborsCondition }) =>
@@ -13,7 +13,7 @@ const findRule =
 // Rule|Undefined -> CellState -> CellState
 const applyRule =
   (rule, cellState) =>
-    rule ? get('result', rule) : cellState;
+    rule ? property('result', rule) : cellState;
 
 // [Rule] -> CellData -> CellState
 export const applyRulesToCellData = curry(

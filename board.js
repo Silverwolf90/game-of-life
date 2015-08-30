@@ -5,7 +5,7 @@ import { mapIndexes2d, defaultValue, log, join, printNewLine } from './util';
 import { isAlive, DEAD } from './cellState';
 
 import { size, map, flow, filter, find, each, constant,
-  range, curry, get } from 'lodash-fp';
+  range, curry, get, property } from 'lodash-fp';
 
 const Board =
   (columns) => ({
@@ -33,7 +33,7 @@ const neighborOffsets = [
 const getSeedCellState = curry(
   (defaultCellState, seedCellStates, cellPosition) => flow(
     find({ cellPosition }),
-    get('cellState'),
+    property('cellState'),
     defaultValue(defaultCellState)
   )(seedCellStates));
 

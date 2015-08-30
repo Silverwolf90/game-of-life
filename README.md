@@ -154,7 +154,7 @@ import { size, map, flow, filter, times, constant,
 
 #### Lodash tips:
 
-Use `get(key, obj)` which allows you to generate property getters that take an object. 
+Use `property(key)` or `get(key, obj)` which allows you to generate property getters that take an object. They also support accessing deep structures and will return undefined if the path is invalid.
 
 ```javascript
 const getFirstName = get('firstName'); 
