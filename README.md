@@ -104,7 +104,7 @@ import { size, map, flow, filter, times, constant,
 
 Use `get(key, obj)` which allows you to generate property getters that take an object. 
 
-```
+```javascript
 const getFirstName = get('firstName'); 
 const person = Person('Bojack', 'Horseman', 'Actor');
 getFirstName(person)
@@ -113,7 +113,7 @@ getFirstName(person)
 
 You can pass in `_` as an argument to a curried function to indicate a placeholder argument.
 
-```
+```javascript
 const numbers = [1, 2, 3, 4];
 const mapNumbers = map(_, numbers);
 const greaterThan2 = gt(2);
