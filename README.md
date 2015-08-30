@@ -1,4 +1,4 @@
-# **This is experimental.*
+### *This is experimental.*
 
 So I've been fooling around with a fairly different JavaScript style than what
 I would use at work. As of 8/30 11:50am, this code has not even been run.
@@ -7,12 +7,6 @@ It's merely a stylistic experiment, but it was linted using [eslint](http://esli
 Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried callback-first functions.
 
 # Basic Guide
-
-## General Principles
-
-  * Code that facilitates function composition
-  * Use functions as the atomical unit
-  * Avoid coupling behvaior and data
 
 ### Heavy use of functions
 
@@ -35,7 +29,7 @@ const indexes =
   (array) =>
     range(0, array.length);
 
-export const mapIndexes = curry(
+const mapIndexes = curry(
   (cb, array) =>
     map(cb, indexes(array)));
   
@@ -79,18 +73,32 @@ Just use plain javascript objects. We have no classes in the traditional sense. 
 
 ```javascript
 const Person =
-  (firstName, lastName, occupation, birthData) => ({
+  (firstName, lastName, occupation) => ({
     firstName,
     lastName,
     occupation,
   });
 ```
 
+### Imports
+
+Prefer to extract your dependencies at the top of your file. Particularly for lodash. I really don't like having my code peppered with `_.` -- it's an eyesore.
+
+If you're only using a couple functions it should fit on one line, but if you have a long list break, feel free to break it into multiple lines.
+
+```javascript
+import { or, map2dIndexes } from './util';
+import { size, map, flow, filter, times, constant,
+  range, curry, get, where } from 'lodash-fp';
+```
+
 ### Lodash
 
-<3 lodash -- chances are if you need some kind of low level behavior lodash provides it or you'll only need to compose a couple functions. It is tested, documented and optimized. Use it heavily.
+<3 lodash -- If you need some kind of low level behavior, chances are lodash provides it or you'll only need to compose a couple functions. The library is tested, documented and optimized. Use it heavily.
 
-`lodash` has `get(key, obj)` which allows you to generate property getters that take an object. 
+#### Lodash tips:
+
+Use `get(key, obj)` which allows you to generate property getters that take an object. 
 
 ```
 const getFirstName = get('firstName'); 
