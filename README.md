@@ -6,7 +6,7 @@ I've been fooling around with a fairly different (and significantly more
 constrained) JavaScript style. Linted using [eslint](http://eslint.org/). Note
 that I am not a functional programmer and I have never done any serious
 functional programming, but I have been toying with more FP
-inspired work in my day-to-day style.
+inspired work in my day-to-day style. 
 
 Note that I'm using [lodash-fp](https://github.com/lodash/lodash-fp), which has auto-curried callback-first functions.
 
@@ -83,9 +83,9 @@ log(add10ThenDivideBy5(5));
 //=> 3
 ```
 
-##### Using impure functions
+##### Using Impure Functions
 
-Some functions you need to use might mutate the world and not exactly return what you want. Particularly if using libraries or frameworks that you don't control, like `console.log`. Which mutates the world and returns `undefined` which makes it difficult to compose. So to force a return value you can use `lodash.constant` to create a function that always returns the value provided.Here's an example of a composable logging function (which you'll find in `util.js`):
+Some functions you need to use might mutate the world and/or not return what you want while still performing a useful operation. Particularly if using libraries or frameworks that you don't control, like `console.log`. It both mutates the world and returns `undefined` which makes it difficult to compose. So to force a return value you can use `lodash.constant` to create a function that always returns the value provided.Here's an example of a composable logging function (which you'll find in `util.js`):
 
 (The ES7 function bind operator makes this much nicer than using `.bind()`)
 
@@ -174,3 +174,4 @@ mapNumbers(greaterThan2)
 4. Is the pattern for types going over-board? Do they make the code more clear?
 6. Do you think this is good code? Why or why not?
 7. How much would be gained by adding static types using Flow or TypeScript?
+8. Performance? Lots of wrapped functions means lots more calls. Does it matter?
