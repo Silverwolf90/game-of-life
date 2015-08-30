@@ -82,9 +82,11 @@ const Person =
 
 ### Imports
 
-Prefer to extract your dependencies at the top of your file. Particularly for lodash. I really don't like having my code peppered with `_.` -- it's an eyesore.
+Prefer to extract your dependencies at the top of your file.
 
 If you're only using a couple functions it should fit on one line, but if you have a long list break, feel free to break it into multiple lines.
+
+It's a bit cumbersome, but it means your dependencies in the file are clearly declared in a single place. As less important reason to do this: it's prettier :) I really don't like having my code peppered with `_.`
 
 ```javascript
 import { or, map2dIndexes } from './util';
@@ -103,6 +105,16 @@ Use `get(key, obj)` which allows you to generate property getters that take an o
 ```
 const getFirstName = get('firstName'); 
 const person = Person('Bojack', 'Horseman', 'Actor');
-console.log(getFirstName(person))
-// => 'Bojack'
+getFirstName(person)
+//=> 'Bojack'
 ``` 
+
+You can pass in `_` as an argument to a curried function to indicate a placeholder argument.
+
+```
+const numbers = [1, 2, 3, 4];
+const mapNumbers = map(_, numbers);
+const greaterThan2 = gt(2);
+mapNumbers(greaterThan2)
+//=> [false, false, true, true]
+```
