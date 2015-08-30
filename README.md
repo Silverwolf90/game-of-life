@@ -1,6 +1,6 @@
 ### *This is experimental. I would love to hear feedback on it.*
 
-So I've been fooling around with a fairly different (and significantly more constrained) JavaScript style. Note that as of 8/30 11:50am, this code has not even been tested or attempted to run. It's merely a fun stylistic experiment, but it was linted using [eslint](http://eslint.org/).
+So I've been fooling around with a fairly different (and significantly more constrained) JavaScript style. Linted using [eslint](http://eslint.org/).
 
 Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried callback-first functions.
 
