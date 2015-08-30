@@ -3,12 +3,12 @@
 import { find, get, curry } from 'lodash-fp';
 
 const matchesRule = curry(
-  (cellState, liveNeighbors, { cellStateCondition, liveNeighborsCondition }) =>
+  ({ cellState, liveNeighbors }, { cellStateCondition, liveNeighborsCondition }) =>
     cellStateCondition(cellState) && liveNeighborsCondition(liveNeighbors));
 
 const findRule =
-  (cellState, liveNeighbors, rules) =>
-    find(matchesRule(cellState, liveNeighbors), rules);
+  (cellData, rules) =>
+    find(matchesRule(cellData), rules);
 
 // Rule|Null -> CellState|Null
 const maybeRuleResult =
@@ -17,8 +17,8 @@ const maybeRuleResult =
 
 // [Rule] -> CellData -> CellState
 export const applyRulesToCellData = curry(
-  (rules, { cellState, liveNeighbors }) =>
-    maybeRuleResult(findRule(cellState, liveNeighbors, rules)) || cellState);
+  (rules, cellData) =>
+    maybeRuleResult(findRule(cellData, rules)) || cellData.cellState);
 
 export const Rule =
   (cellStateCondition, liveNeighborsCondition, result) => ({
