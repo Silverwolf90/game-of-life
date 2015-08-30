@@ -146,3 +146,4 @@ mapNumbers(greaterThan2)
 3. How well are my files/functions/types organized?
 4. Is the pattern for types going over-board? Do they make the code more clear?
 6. Do you think this is good code? Why or why not?
+7. How much would be gained by adding static types using Flow or TypeScript?
