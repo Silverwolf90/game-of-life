@@ -107,15 +107,17 @@ export const generateBoard = curry(
     Board
   )(board));
 
-const printColumn =
-  (column) => flow(
+const printColumn = curry(
+  (aliveChar, deadChar, column) => flow(
+    map((state) =>
+      isAlive(state) ? aliveChar : deadChar),
     join(' '),
     log
-  )(column);
+  )(column));
 
-export const printBoard =
-  (board) => flow(
-    each(printColumn),
+export const printBoard = curry(
+  (aliveChar, deadChar, board) => flow(
+    each(printColumn(aliveChar, deadChar)),
     printNewLine,
     constant(board)
-  )(board.columns);
+  )(board.columns));

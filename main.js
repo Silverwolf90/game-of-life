@@ -24,11 +24,13 @@ const seedCellStates = [
   SeedCellState(CellPosition(2, 3), ALIVE)
 ];
 
+const prettyPrint = printBoard('X', '-');
+
 const runGame =
   (rules, numColumns, numRows, numGenerations, seedCellStates = []) =>
     reduce(
-      flow(printBoard, generateBoard(rules)),
+      flow(prettyPrint, generateBoard(rules)),
       initializeBoard(numColumns, numRows, seedCellStates, DEAD),
       range(0, numGenerations));
 
-runGame(rules, numColumns, numRows, numGenerations, seedCellStates);
+prettyPrint(runGame(rules, numColumns, numRows, numGenerations, seedCellStates));
