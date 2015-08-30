@@ -1,4 +1,4 @@
-*This is experimental.*
+# **This is experimental.*
 
 So I've been fooling around with a fairly different JavaScript style than what
 I would use at work. As of 8/30 11:50am, this code has not even been run.
@@ -37,7 +37,7 @@ export const mapIndexes = curry(
 
 ## Function Composition
 
-`lodash` provides a called (`flow`)[https://lodash.com/docs#flow] which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
+`lodash` provides a function called `flow` ([documentation](https://lodash.com/docs#flow) which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
 
 ```javascript
 
@@ -57,7 +57,7 @@ Its not obvious what we need to pass to `someTransformation`. We can look at the
 
 const someTransformation =
   (itemsToTransform) => flow(
-    mapThingOverArray,
+    mapOverArray,
     firstElement,
     doThingToThatFirstElement,
     doYetAnotherThing
@@ -65,4 +65,4 @@ const someTransformation =
 
 ```
 
-Its a bit uglier, but the clarity gained is more important.
+Its a bit uglier, but the clarity gained is more important. I see it as similar to the chaining syntax that underscore or lodash provide.
