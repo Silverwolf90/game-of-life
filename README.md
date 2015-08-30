@@ -2,6 +2,12 @@
 
 If you are unfamiliar with the game of life I suggest you look at the [Wikipedia article](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
+To run the game:
+
+```
+babel-node --stage 0 main.js
+```
+
 I've been fooling around with a fairly different (and significantly more
 constrained) JavaScript style. Linted using [eslint](http://eslint.org/). Note
 that I am not a functional programmer and I have never done any serious
