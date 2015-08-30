@@ -8,13 +8,13 @@ Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried call
 
 # Basic Guide
 
-## Functions
+## Heavy use of functions
 
-Use arrow function syntax.
-Use `const`.
-Split the expression into 3 lines. Name. Arguments. Body.
-Put function decorators (ie: `curry()`, `memoize()`) on same line as name.
-Put arguments that act as function parameters first. Arguments should have data as last argument. 
+* Use arrow function syntax.
+* Use `const`.
+* Split the expression into 3 lines. Name. Arguments. Body.
+* Put function decorators (ie: `curry()`, `memoize()`) on same line as name.
+* Put arguments that act as function parameters first. Arguments should have data as last argument. 
 
 Ideally (not required, context depdendent-- use your discretion):
   * Function should be one expression.
@@ -37,14 +37,14 @@ export const mapIndexes = curry(
 
 ## Function Composition
 
-`lodash` provides a called `flow` ((docs)[https://lodash.com/docs#flow]) which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
+`lodash` provides a called (`flow`)[https://lodash.com/docs#flow] which does left-to-right function composition. I find it to be tremendously useful, however, a downside is the input to the composed function is not declared anywhere:
 
 ```javascript
 
 const someTransformation = flow(
-  doThingToArray,
-  first,
-  doAnotherThing,
+  mapThingOverArray,
+  firstElement,
+  doThingToThatFirstElement,
   doYetAnotherThing
 )
 
@@ -56,12 +56,12 @@ Its not obvious what we need to pass to `someTransformation`. We can look at the
 ```javascript
 
 const someTransformation =
-  (arrayOfType) => flow(
-    doThingToArray,
-    first,
-    doAnotherThing,
+  (itemsToTransform) => flow(
+    mapThingOverArray,
+    firstElement,
+    doThingToThatFirstElement,
     doYetAnotherThing
-  )(arrayOfType)
+  )(itemsToTransform)
 
 ```
 
