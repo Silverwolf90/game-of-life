@@ -1,11 +1,11 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { mapIndexes2d, ifThen } from './util';
+import { mapIndexes2d, defaultValue } from './util';
 import { isAlive, DEAD } from './cellState';
 
-import { size, map, flow, filter, constant, find,
-  range, curry, get, isUndefined } from 'lodash-fp';
+import { size, map, flow, filter, find,
+  range, curry, get } from 'lodash-fp';
 
 const Board =
   (columns) => ({
@@ -34,7 +34,7 @@ const getSeedCellState = curry(
   (defaultCellState, seedCellStates, cellPosition) => flow(
     find({ cellPosition }),
     get('cellState'),
-    ifThen(isUndefined, constant(defaultCellState))
+    defaultValue(defaultCellState)
   )(seedCellStates));
 
 const makeColumn = curry(

@@ -1,6 +1,6 @@
 'use strict';
 
-import { map, range, curry } from 'lodash-fp';
+import { map, range, curry, isUndefined, constant } from 'lodash-fp';
 
 export const log =
   (arg) =>
@@ -31,3 +31,7 @@ export const mapIndexes2d = curry(
 export const ifThen = curry(
   (predicate, then, val) =>
     predicate(val) ? then(val) : val);
+
+export const defaultValue = curry(
+  (defaultVal, val) =>
+    ifThen(isUndefined, constant(defaultVal), val));
