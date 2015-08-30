@@ -10,7 +10,7 @@ const findRule =
   (cellData, rules) =>
     find(matchesRule(cellData), rules);
 
-// Rule|Undefined -> CellState
+// Rule|Undefined -> CellState -> CellState
 const applyRule =
   (rule, cellState) =>
     rule ? get('result', rule) : cellState;

@@ -1,7 +1,7 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { mapIndexes2d, ifThen, log } from './util';
+import { mapIndexes2d, ifThen } from './util';
 import { isAlive, DEAD } from './cellState';
 
 import { size, map, flow, filter, constant, find,
@@ -73,7 +73,7 @@ const countLiveNeighbors = curry(
   )(cellPosition));
 
 // (CellPosition -> A) -> Board -> Board
-const mapCellPositions = curry(
+const mapBoardCellPositions = curry(
   (onCellPosition, board) =>
     mapIndexes2d((column, row) =>
       onCellPosition(CellPosition(column, row)), board.columns));
@@ -103,6 +103,6 @@ export const createBoard =
 // [Rule] -> Board -> Board
 export const generateBoard = curry(
   (rules, board) => flow(
-    mapCellPositions(processCellPosition(rules, board)),
+    mapBoardCellPositions(processCellPosition(rules, board)),
     Board
   )(board));

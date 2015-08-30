@@ -6,9 +6,9 @@ export const log =
   (arg) =>
     console.log(arg) || arg;
 
-export const log2 = curry(
-  (arg1, arg2) =>
-    console.log(arg1, arg2) || arg2);
+export const trace = curry(
+  (msg, val) =>
+    console.log(msg, val) || val);
 
 export const or = curry(
   (func1, func2, arg) =>
