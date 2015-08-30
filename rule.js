@@ -10,10 +10,13 @@ const findRule =
   (cellData, rules) =>
     find(matchesRule(cellData), rules);
 
+const ruleResult =
+  property('result');
+
 // Rule|Undefined -> CellState -> CellState
 const applyRule =
   (rule, cellState) =>
-    rule ? property('result', rule) : cellState;
+    rule ? ruleResult(rule) : cellState;
 
 // [Rule] -> CellData -> CellState
 export const applyRulesToCellData = curry(
