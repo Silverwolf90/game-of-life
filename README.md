@@ -82,11 +82,13 @@ const Person =
 
 ### Imports
 
-Prefer to extract your dependencies at the top of your file.
+Prefer to name every dependency you need from a module at the top of your file instead of passing the entierty of the module around.
+
+It's a bit cumbersome, but it means your dependencies in the file are clearly declared in a single place and your file has exactly what it needs to run. No more, no less. 
 
 If you're only using a couple functions it should fit on one line, but if you have a long list break, feel free to break it into multiple lines.
 
-It's a bit cumbersome, but it means your dependencies in the file are clearly declared in a single place. As less important reason to do this: it's prettier :) I really don't like having my code peppered with `_.`
+A less important reason to do this: it's prettier :) I really don't like having my code peppered with `_.`
 
 ```javascript
 import { or, map2dIndexes } from './util';
