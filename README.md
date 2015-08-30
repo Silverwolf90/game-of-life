@@ -82,7 +82,8 @@ log(add10ThenDivideBy5(5));
 
 ```javascript
 const add10ThenDivideBy5 = flow(add(10), trace('completed addition'), divide(5));
-//=> 'completed addition 15'
+log(add10ThenDivideBy5(5));
+//=> 'completed addition' 15
 //=> 3
 ```
 
@@ -97,6 +98,14 @@ const Person =
     lastName,
     occupation,
   });
+```
+
+When you're passing an object and you only need a couple of the fields, use destructuring.
+
+```javascript
+const getFullName = 
+  ({firstName, lastName}) =>
+    `${firstName} ${lastName}` 
 ```
 
 ### Imports
