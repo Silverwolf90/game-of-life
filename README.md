@@ -1,15 +1,12 @@
-### *This is experimental. I would love to hear feedback on both the general style and the code itself.*
+##### **This is experimental. I would love to hear feedback on both the general style and the code itself.**
 
-If you are unfamiliar with the game of life I suggest you look at the [wikipedia article](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
+If you are unfamiliar with the game of life I suggest you look at the [Wikipedia article](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
 I've been fooling around with a fairly different (and significantly more
 constrained) JavaScript style. Linted using [eslint](http://eslint.org/). Note
 that I am not a functional programmer and I have never done any serious
 functional programming, but I have been toying with more FP
 inspired work in my day-to-day style.
-
-Naturally this example is a bit over-engineered on purpose, you could implement the game of life which much fewer.
-
 
 Note that I'm using [lodash-fp](http://eslint.org/), which has auto-curried callback-first functions.
 
