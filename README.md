@@ -83,16 +83,18 @@ log(add10ThenDivideBy5(5));
 //=> 3
 ```
 
-##### Composition Impure functions
+##### Using impure functions
 
-Some functions you need to use might mutate the world and not exactly return what you want. Particularly if using libraries or frameworks that you don't control, like `console.log`. Which mutates the world and returns `undefined` which makes it difficult to compose. So to force a return value you can use `lodash.constant` to create a function that always returns the value provide.d Here's an example of a composable logging function (which you'll find in `util.js`):
+Some functions you need to use might mutate the world and not exactly return what you want. Particularly if using libraries or frameworks that you don't control, like `console.log`. Which mutates the world and returns `undefined` which makes it difficult to compose. So to force a return value you can use `lodash.constant` to create a function that always returns the value provided.Here's an example of a composable logging function (which you'll find in `util.js`):
+
+(The ES7 function bind operator makes this much nicer than using `.bind()`)
 
 ```javascript
 const log = 
   (value) => flow(
     ::console.log,
-    constant(val)
-  )(val)
+    constant(value)
+  )(value)
 ```
 
 If the function is guaranteed to return something falsy, then you could do this...
