@@ -175,6 +175,7 @@ mapNumbers(greaterThan2)
 6. Do you think this is good code? Why or why not?
 7. How much would be gained by adding static types using Flow or TypeScript?
 8. Performance? Lots of wrapped functions means lots more calls. Does it matter?
+9. Should we drop the usage of semi-colons?
 
 The MIT License (MIT)
 
