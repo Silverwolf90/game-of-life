@@ -1,7 +1,8 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { mapIndexes2d, defaultValue, log, join, printNewLine, makeArray } from './util';
+import { mapIndexes2d, defaultValue, log, join, pairWith,
+  printNewLine, makeArray, spreadMap } from './util';
 import { isAlive, DEAD } from './cellState';
 
 import _, { size, map, flow, filter, find, each, constant,
@@ -40,17 +41,16 @@ const getSeedCellState = curry(
 
 // (Int, Int) -> [(Int, Int)]
 const columnCoords =
-  ([columnIndex, numRows]) =>
+  (columnIndex, numRows) =>
     zip(makeArray(numRows, columnIndex), range(0, numRows));
 
 // CellState -> [SeedCellState] -> (Int, Int) -> [CellState]
 const makeColumn = curry(
-  (defaultCellState, seedCellStates, columnData) => flow(
+  (defaultCellState, seedCellStates, [columnIndex, numRows]) => flow(
     columnCoords,
-    map(([columnIndex, rowIndex]) =>
-      CellPosition(columnIndex, rowIndex)),
+    spreadMap(CellPosition),
     map(getSeedCellState(defaultCellState, seedCellStates))
-  )(columnData));
+  )(columnIndex, numRows));
 
 // CellPosition -> Offset -> CellPosition
 const offsetCellPosition = curry(
@@ -103,17 +103,15 @@ const processCellPosition = curry(
     applyRulesToCellData(rules)
   )(cellPosition));
 
-// Use to initialize a new Board
-// CellState -> [SeedCellState] -> Int -> Int -> Board
-export const createBoard = curry(
-  (defaultCellState, seedCellStates, numRows, numColumns) => flow(
-    range(0),
-    map((columnIndex) => [columnIndex, numRows]),
+// CellState -> [SeedCellState] -> Int -> (Int -> Board
+export const initBoard = curry(
+  (defaultCellState, seedCellStates, numColumns, numRows) => flow(
+    (numColumns, numRows) =>
+      map(pairWith(numRows), range(0, numColumns)),
     map(makeColumn(defaultCellState, seedCellStates)),
     Board
-  )(numColumns));
+  )(numColumns, numRows));
 
-// The main generation function of the game.
 // [Rule] -> Board -> Board
 export const generateBoard = curry(
   (rules, board) => flow(

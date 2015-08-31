@@ -52,3 +52,16 @@ export const printNewLine =
 export const makeArray =
   (length, initValue) =>
     fill(0, length, initValue, new Array(length));
+
+/**
+ * Map over a two dimensional array and spread each array
+ * as arguments into the `callback`
+ * (... -> B) -> [Array] -> [B]
+ */
+export const spreadMap = curry(
+  (callback, array2d) =>
+    map(array => callback(...array), array2d));
+
+// A -> B -> (B, A)
+export const pairWith = curry(
+  (a, b) => [b, a]);
