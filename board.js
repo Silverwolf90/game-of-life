@@ -1,11 +1,11 @@
 'use strict';
 
 import { applyRulesToCellData } from './rule';
-import { mapIndexes2d, defaultValue, log, join, printNewLine } from './util';
+import { mapIndexes2d, defaultValue, log, join, printNewLine, makeArray } from './util';
 import { isAlive, DEAD } from './cellState';
 
 import _, { size, map, flow, filter, find, each, constant,
-  range, curry, get, property } from 'lodash-fp';
+  range, curry, get, property, zip } from 'lodash-fp';
 
 const Board =
   (columns) => ({
@@ -38,13 +38,19 @@ const getSeedCellState = curry(
     defaultValue(defaultCellState)
   )({ cellPosition }));
 
-// Int -> [SeedCellState] -> CellState -> Int -> [CellState]
+// (Int, Int) -> [(Int, Int)]
+const columnCoords =
+  ([columnIndex, numRows]) =>
+    zip(makeArray(numRows, columnIndex), range(0, numRows));
+
+// CellState -> [SeedCellState] -> (Int, Int) -> [CellState]
 const makeColumn = curry(
-  (numRows, seedCellStates, defaultCellState, columnIndex) => flow(
-    range(0),
-    map(rowIndex => CellPosition(columnIndex, rowIndex)),
+  (defaultCellState, seedCellStates, columnData) => flow(
+    columnCoords,
+    map(([columnIndex, rowIndex]) =>
+      CellPosition(columnIndex, rowIndex)),
     map(getSeedCellState(defaultCellState, seedCellStates))
-  )(numRows));
+  )(columnData));
 
 // CellPosition -> Offset -> CellPosition
 const offsetCellPosition = curry(
@@ -98,13 +104,14 @@ const processCellPosition = curry(
   )(cellPosition));
 
 // Use to initialize a new Board
-// Int -> Int -> [SeedCellState] -> CellState -> Board
-export const createBoard =
-  (numColumns, numRows, seedCellStates, defaultCellState) => flow(
+// CellState -> [SeedCellState] -> Int -> Int -> Board
+export const createBoard = curry(
+  (defaultCellState, seedCellStates, numRows, numColumns) => flow(
     range(0),
-    map(makeColumn(numRows, seedCellStates, defaultCellState)),
+    map((columnIndex) => [columnIndex, numRows]),
+    map(makeColumn(defaultCellState, seedCellStates)),
     Board
-  )(numColumns);
+  )(numColumns));
 
 // The main generation function of the game.
 // [Rule] -> Board -> Board

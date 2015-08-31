@@ -6,11 +6,9 @@ import { ALIVE, DEAD, isAlive, isDead, SeedCellState } from './cellState';
 import { Rule } from './rule';
 import { or } from './util';
 
-const initializeBoard = createBoard;
-
 const numGenerations = 100;
-const numColumns     = 20;
-const numRows        = 20;
+const numColumns     = 30;
+const numRows        = 30;
 
 const rules = [
   Rule(isAlive, lt(2),            DEAD  ),
@@ -32,11 +30,13 @@ const ALIVE_CHAR = 'X';
 const DEAD_CHAR  = '-';
 const prettyPrint = printBoard(ALIVE_CHAR, DEAD_CHAR);
 
+const initializeBoard = createBoard(DEAD);
+
 const runGame =
   (rules, numColumns, numRows, numGenerations, seedCellStates = []) =>
     reduce(
       flow(prettyPrint, generateBoard(rules)),
-      initializeBoard(numColumns, numRows, seedCellStates, DEAD),
+      initializeBoard(seedCellStates, numRows, numColumns),
       range(0, numGenerations));
 
 prettyPrint(runGame(rules, numColumns, numRows, numGenerations, seedCellStates));

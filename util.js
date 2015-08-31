@@ -1,6 +1,6 @@
 'use strict';
 
-import { map, range, curry, isUndefined, constant, partial } from 'lodash-fp';
+import { map, range, curry, isUndefined, constant, partial, fill } from 'lodash-fp';
 
 export const log =
   (arg) =>
@@ -48,3 +48,7 @@ export const join = curry(
 
 export const printNewLine =
   partial(log, '\n');
+
+export const makeArray =
+  (length, initValue) =>
+    fill(0, length, initValue, new Array(length));
