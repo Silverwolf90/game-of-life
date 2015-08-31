@@ -24,7 +24,7 @@ Note that I'm using [lodash-fp](https://github.com/lodash/lodash-fp), which has 
 * Use `const`.
 * Split the expression into 3 lines. Name. Arguments. Body.
 * Put function decorators (ie: `curry()`, `memoize()`) on same line as name.
-* Put arguments that act as function parameters first. Arguments should have data as last argument. 
+* [Place the arguments less likely to change first.](http://glebbahmutov.com/blog/put-callback-first-for-elegance/)
 
 Ideally (not required, context dependant-- use your discretion):
   * Functions should be pure (you need a really good reason to not follow this one)
