@@ -7,8 +7,8 @@ import { Rule } from './rule';
 import { or } from './util';
 
 const numGenerations = 100;
-const numColumns     = 30;
-const numRows        = 30;
+const numColumns     = 20;
+const numRows        = 20;
 
 const rules = [
   Rule(isAlive, lt(2),            DEAD  ),
