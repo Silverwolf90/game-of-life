@@ -49,7 +49,7 @@ const columnCoords =
   (columnIndex, numRows) =>
     zip(makeArray(numRows, columnIndex), range(0, numRows));
 
-// CellState -> [SeedCellState] -> (Int, Int) -> [CellState]
+// CellState -> [SeedCellState] -> (Int, Int) -> Column
 const makeColumn = curry(
   (defaultCellState, seedCellStates, [columnIndex, numRows]) => flow(
     columnCoords,
@@ -96,15 +96,15 @@ const boardToArray2d =
 const mapBoardCellPositions = curry(
   (onCellPosition, board) => flow(
     boardToArray2d,
-    mapIndexes2d(flow(CellPosition, onCellPosition))
+    mapIndexes2d(flow(CellPosition,
+                      onCellPosition))
   )(board));
 
 // Board -> CellPosition -> CellData
 const cellPositionToCellData = curry(
   (board, cellPosition) =>
-    CellData(
-      getCellState(board, cellPosition),
-      countLiveNeighbors(board, cellPosition)
+    CellData(getCellState(board, cellPosition),
+             countLiveNeighbors(board, cellPosition)
     ));
 
 // [Rule] -> Board -> CellPosition -> CellState
@@ -114,7 +114,7 @@ const processCellPosition = curry(
     applyRulesToCellData(rules)
   )(cellPosition));
 
-// CellState -> [SeedCellState] -> Int -> (Int -> Board
+// CellState -> [SeedCellState] -> Int -> Int -> Board
 export const initBoard = curry(
   (defaultCellState, seedCellStates, numColumns, numRows) => flow(
     (numColumns, numRows) =>
@@ -136,7 +136,7 @@ const getCellStateChar = curry(
   (aliveChar, deadChar, state) =>
     isAlive(state) ? aliveChar : deadChar);
 
-// String -> String -> [CellState] -> String
+// String -> String -> Column -> String
 const printColumn = curry(
   (aliveChar, deadChar, column) => flow(
     property('cellStates'),

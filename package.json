@@ -20,5 +20,5 @@
     "docs": "jsdoc compiled -d docs"
   },
   "author": "Cyril Silverman",
-  "license": "pending"
+  "license": "MIT"
 }

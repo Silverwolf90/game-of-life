@@ -24,6 +24,7 @@
     "curly": false,
     "no-multi-spaces": false,
     "dot-notation": false,
+    "no-duplicate-case": false,
     "new-cap": false
   }
 }
