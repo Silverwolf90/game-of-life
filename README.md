@@ -56,8 +56,7 @@ const someTransformation = flow(
 )
 ```
 
-Its not obvious what we need to pass to `someTransformation`. We can look at the first function and infer that we need an array, but what does the array need to contain. We'd have to look at the definition of that function to figure it out. So to avoid this problem, simply wrap the composed function in a function that takes one argument and passes it to composed function.
-
+However, due to the untyped nature of JS, a caveat to this point-free style is that not obvious what we need to pass to `someTransformation` and there is no compiler/type-checker to tell you you're making a mistake. We can look at the first function and infer that we need an array, but what does the array need to contain? We'd have to look at the definition of that function to figure it out. So to avoid this problem, simply wrap the composed function in a function that takes one argument and passes it to composed function.
 
 ```javascript
 const someTransformation =
@@ -69,7 +68,7 @@ const someTransformation =
   )(itemsToTransform)
 ```
 
-Its a bit uglier, but the clarity gained is more important. I see it as similar to the chaining syntax that underscore or lodash provide.
+Its a much less elegant, but I believe the clarity gained is more important (particularly if working with other people). I see it as similar to the chaining syntax that underscore or lodash provide.
 
 ##### Debugging
 
