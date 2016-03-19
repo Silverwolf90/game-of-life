@@ -5,6 +5,7 @@ If you are unfamiliar with the game of life I suggest you look at the [Wikipedia
 To run the game:
 
 ```
+npm install
 babel-node main.js
 ```
 
