@@ -1,51 +1,46 @@
-'use strict';
-
 import {
-  size, map, flow, filter, each, constant, isEqual, getOr,
-  range, curry, property, zip, spread, find, over, join
+  size, map, flow, filter, forEach, constant, isEqual, getOr,
+  range, curry, property, zip, spread, find, over, join,
 } from 'lodash/fp';
-import {
-  mapIndexes2d, log, pairWith,
-  printNewLine, makeArray
-} from './util';
+import { mapIndexes2d, log, pairWith, printNewLine, makeArray } from './util';
 import { applyRules } from './rule';
 import { isAlive, ALIVE, DEAD } from './cellState';
 
 const Column =
   (cellStates) => ({
-    cellStates
+    cellStates,
   });
 
 const Board =
   (columns) => ({
-    columns
+    columns,
   });
 
 export const CellPosition =
   (column, row) => ({
     column,
-    row
+    row,
   });
 
 const neighborOffsets = [
-  [-1, -1], [ 0, -1], [+1, -1],
-  [-1,  0],           [+1,  0],
-  [-1, +1], [ 0, +1], [+1, +1]
+  [-1, -1], [0, -1], [+1, -1],
+  [-1,  0],          [+1,  0],
+  [-1, +1], [0, +1], [+1, +1],
 ];
 
-// (Int, Int) -> [CellPosition]
-const columnCellPositions =
-  (columnIndex, numRows) => flow(
+// [CellPosition] -> Int -> Int -> [CellState]
+const columnCellStates = curry(
+  (seed, columnIndex, numRows) => flow(
     range(0),
     zip(makeArray(numRows, columnIndex)),
-    map(spread(CellPosition))
-  )(numRows);
+    map(spread(CellPosition)),
+    map(cellPosition => find(isEqual(cellPosition), seed) ? ALIVE : DEAD)
+  )(numRows));
 
-// [SeedCellState] -> (Int, Int) -> Column
+// [CellPosition] -> (Int, Int) -> Column
 const makeColumn = curry(
   (seed, [columnIndex, numRows]) => flow(
-    columnCellPositions,
-    map(cellPosition => find(isEqual(cellPosition), seed) ? ALIVE : DEAD),
+    columnCellStates(seed),
     Column
   )(columnIndex, numRows));
 
@@ -86,7 +81,7 @@ const boardToArray2d =
 // [CellPosition] -> (Int, Int) -> Board
 export const initBoard = curry(
   (seed, dimensions) => flow(
-    ({ columns, rows, }) => map(pairWith(rows), range(0, columns)),
+    ({ columns, rows }) => map(pairWith(rows), range(0, columns)),
     map(makeColumn(seed)),
     Board
   )(dimensions));
@@ -122,7 +117,7 @@ const printColumn = curry(
 export const printBoard = curry(
   (aliveChar, deadChar, board) => flow(
     property('columns'),
-    each(printColumn(aliveChar, deadChar)),
+    forEach(printColumn(aliveChar, deadChar)),
     printNewLine,
     constant(board) // Hacky way to force a return value
   )(board));

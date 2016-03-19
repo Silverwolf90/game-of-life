@@ -1,5 +1,3 @@
-'use strict';
-
 import { map, reduce, lt, gt, eq, range, flow, spread } from 'lodash/fp';
 import { generateBoard, initBoard, printBoard, CellPosition } from './board';
 import { ALIVE, DEAD, isAlive, isDead } from './cellState';
@@ -26,7 +24,7 @@ const finalBoard = runGame({
   rules: [underpopulation, overopulation, reproduction],
   dimensions: { columns: 20, rows: 20 },
   generations: 100,
-  seed: glider
+  seed: glider,
 });
 
 prettyPrintBoard(finalBoard);

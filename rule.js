@@ -1,5 +1,3 @@
-'use strict';
-
 import { flow, find, curry, getOr } from 'lodash/fp';
 
 const matchesRule = curry(
@@ -18,5 +16,5 @@ export const Rule =
   (cellStateCondition, liveNeighborsCondition, result) => ({
     cellStateCondition,
     liveNeighborsCondition,
-    result
+    result,
   });

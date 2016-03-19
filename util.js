@@ -1,5 +1,3 @@
-'use strict';
-
 import { map, range, curry, partial, fill } from 'lodash/fp';
 
 export const log =
