@@ -2,22 +2,14 @@
   "name": "functional-game-of-life",
   "version": "0.0.0",
   "description": "",
-  "main": "bundle.js",
-  "directories": {
-    "doc": "docs"
-  },
   "dependencies": {
-    "lodash-fp": "~0.10.2"
+    "lodash": "4.6.1"
   },
   "devDependencies": {
-    "eslint": "~0.21.2",
-    "babel": "~5.4.7",
-    "babel-eslint": "~3.1.9",
-    "babel-core": "~5.4.7"
-  },
-  "scripts": {
-    "babelize": "babel src --out-dir compiled",
-    "docs": "jsdoc compiled -d docs"
+    "babel-cli": "^6.5.1",
+    "babel-core": "^6.5.1",
+    "babel-eslint": "^6.0.0-beta.3",
+    "babel-preset-es2015": "^6.5.0"
   },
   "author": "Cyril Silverman",
   "license": "MIT"

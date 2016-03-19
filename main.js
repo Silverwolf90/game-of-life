@@ -1,40 +1,32 @@
 'use strict';
 
-import { reduce, lt, gt, eq, range, flow } from 'lodash-fp';
+import { map, reduce, lt, gt, eq, range, flow, spread } from 'lodash/fp';
 import { generateBoard, initBoard, printBoard, CellPosition } from './board';
-import { ALIVE, DEAD, isAlive, isDead, SeedCellState } from './cellState';
+import { ALIVE, DEAD, isAlive, isDead } from './cellState';
 import { Rule } from './rule';
-import { or } from './util';
 
-const numGenerations = 100;
-const numColumns     = 20;
-const numRows        = 20;
-
-const rules = [
-  Rule(isAlive, lt(2),            DEAD  ),
-  Rule(isAlive, or(eq(2), eq(3)), ALIVE ),
-  Rule(isAlive, gt(3),            DEAD  ),
-  Rule(isDead,  eq(3),            ALIVE )
-];
-
-const seedCellStates = [
-  // Glider pattern
-  SeedCellState(CellPosition(2, 2), ALIVE),
-  SeedCellState(CellPosition(3, 0), ALIVE),
-  SeedCellState(CellPosition(3, 2), ALIVE),
-  SeedCellState(CellPosition(4, 2), ALIVE),
-  SeedCellState(CellPosition(4, 1), ALIVE)
-];
+const underpopulation = Rule(isAlive, gt(2), DEAD);
+const overopulation = Rule(isAlive, lt(3), DEAD);
+const reproduction = Rule(isDead, eq(3), ALIVE);
+const glider =
+  map(spread(CellPosition), [[2, 2], [3, 0], [3, 2], [4, 2], [4, 1]]);
 
 const ALIVE_CHAR = 'X';
 const DEAD_CHAR  = '-';
-const prettyPrint = printBoard(ALIVE_CHAR, DEAD_CHAR);
+const prettyPrintBoard = printBoard(ALIVE_CHAR, DEAD_CHAR);
 
 const runGame =
-  (rules, numColumns, numRows, numGenerations, seedCellStates = []) =>
+  ({ rules, dimensions, generations, seed }) =>
     reduce(
-      flow(prettyPrint, generateBoard(rules)),
-      initBoard(DEAD, seedCellStates, numColumns, numRows),
-      range(0, numGenerations));
+      flow(prettyPrintBoard, generateBoard(rules)),
+      initBoard(seed, dimensions),
+      range(0, generations));
 
-prettyPrint(runGame(rules, numColumns, numRows, numGenerations, seedCellStates));
+const finalBoard = runGame({
+  rules: [underpopulation, overopulation, reproduction],
+  dimensions: { columns: 20, rows: 20 },
+  generations: 100,
+  seed: glider
+});
+
+prettyPrintBoard(finalBoard);
