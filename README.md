@@ -5,16 +5,16 @@ If you are unfamiliar with the game of life I suggest you look at the [Wikipedia
 To run the game:
 
 ```
-babel-node --stage 0 main.js
+babel-node main.js
 ```
 
 I've been fooling around with a fairly different (and significantly more
 constrained) JavaScript style. Linted using [eslint](http://eslint.org/). Note
 that I am not a functional programmer and I have never done any serious
 functional programming, but I have been toying with more FP
-inspired work in my day-to-day style. 
+inspired work in my day-to-day style.
 
-Note that I'm using [lodash-fp](https://github.com/lodash/lodash-fp), which has auto-curried callback-first functions.
+Note that I'm using [lodash/fp](https://github.com/lodash/lodash/wiki/FP-Guide), which has auto-curried callback-first functions.
 
 # Basic Guide
 
@@ -26,7 +26,7 @@ Note that I'm using [lodash-fp](https://github.com/lodash/lodash-fp), which has 
 * Put function decorators (ie: `curry()`, `memoize()`) on same line as name.
 * [Place the arguments less likely to change first.](http://glebbahmutov.com/blog/put-callback-first-for-elegance/)
 
-Ideally (not required, context dependant-- use your discretion):
+Ideally (not required, context dependant-- use discretion):
   * Functions should be pure (you need a really good reason to not follow this one)
   * Function should be one expression. Avoid return.
   * Avoid intermediate variables
@@ -95,7 +95,7 @@ Some functions you need to use might mutate the world and/or not return what you
 (The ES7 function bind operator makes this much nicer than using `.bind()`)
 
 ```javascript
-const log = 
+const log =
   (value) => flow(
     ::console.log,
     constant(value)
@@ -110,7 +110,7 @@ const log =
     console.log(value) || value;
 ```
 
-### Data Types (not classes)
+### Use plain JavaScript objects over classes
 
 Just use plain javascript objects. We have no classes in the traditional sense. Do not couple data and behavior. Use upper-cased functions that take in their data as arguments and simply wrap them in an object. ES6 shorthand syntax makes this nice.
 
@@ -126,16 +126,16 @@ const Person =
 When you're passing an object and you only need a couple of the fields, use destructuring.
 
 ```javascript
-const getFullName = 
+const getFullName =
   ({firstName, lastName}) =>
-    `${firstName} ${lastName}` 
+    `${firstName} ${lastName}`
 ```
 
 ### Imports
 
 Prefer to name every dependency you need from a module at the top of your file instead of passing the entierty of the module around.
 
-It's a bit cumbersome, but it means your dependencies in the file are clearly declared in a single place and your file has exactly what it needs to run. No more, no less. 
+It's a bit cumbersome, but it means your dependencies in the file are clearly declared in a single place and your file has exactly what it needs to run. No more, no less.
 
 If you're only using a couple functions it should fit on one line, but if you have a long list break, feel free to break it into multiple lines.
 
@@ -143,8 +143,10 @@ A less important reason to do this: it's prettier :) I really don't like having 
 
 ```javascript
 import { or, map2dIndexes } from './util';
-import { size, map, flow, filter, times, constant,
-  range, curry, get, where } from 'lodash-fp';
+import {
+  size, map, flow, filter, times, constant,
+  range, curry, get, where
+} from 'lodash/fp';
 ```
 
 ### Lodash
@@ -156,11 +158,11 @@ import { size, map, flow, filter, times, constant,
 Use `property(key)` or `get(key, obj)` which allows you to generate property getters that take an object. They also support accessing deep structures and will return undefined if the path is invalid.
 
 ```javascript
-const getFirstName = get('firstName'); 
+const getFirstName = get('firstName');
 const person = Person('Bojack', 'Horseman', 'Actor');
 getFirstName(person)
 //=> 'Bojack'
-``` 
+```
 
 You can pass in `_` as an argument to a curried function to indicate a placeholder argument.
 
@@ -175,12 +177,11 @@ mapNumbers(greaterThan2)
 ### Questions I have
 1. Are the type signatures as comments useful?
 2. Does this style scale?
-3. How well are my files/functions/types organized?
+3. Are my files/functions/types intuitively organized?
 4. Is the pattern for types going over-board? Do they make the code more clear?
 6. Do you think this is good code? Why or why not?
 7. How much would be gained by adding static types using Flow or TypeScript?
 8. Performance? Lots of wrapped functions means lots more calls. Does it matter?
-9. Should we drop the usage of semi-colons?
 
 The MIT License (MIT)
 
