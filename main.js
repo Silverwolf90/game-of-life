@@ -1,4 +1,4 @@
-import _, { map, reduce, lt, gt, eq, range, flow, spread } from 'lodash/fp';
+import _, { map, reduce, lt, gt, eq, range, flow, spread, unary } from 'lodash/fp';
 import { generateBoard, initBoard, printBoard, CellPosition } from './board';
 import { ALIVE, DEAD } from './cellState';
 import { Rule } from './rule';
@@ -16,7 +16,7 @@ const prettyPrintBoard = printBoard(ALIVE_CHAR, DEAD_CHAR);
 const runGame =
   ({ rules, dimensions, generations, seed }) =>
     reduce(
-      flow(prettyPrintBoard, generateBoard(rules)),
+      unary(flow(prettyPrintBoard, generateBoard(rules))),
       initBoard(seed, dimensions),
       range(0, generations));
 
