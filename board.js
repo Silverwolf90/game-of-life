@@ -3,7 +3,7 @@ import {
 } from 'lodash/fp';
 import { mapWithIndexes2d, log, printNewLine, createFilledArray } from './util';
 import { applyRules } from './rule';
-import { isAlive, getCellStateChar, ALIVE, DEAD } from './cellState';
+import { isAlive, ALIVE, DEAD } from './cellState';
 
 const Column =
   (cellStates) => ({
