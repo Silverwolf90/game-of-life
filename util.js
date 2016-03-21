@@ -25,16 +25,11 @@ export const mapIndexes = curry(
 export const mapIndexes2d = curry(
   (cb, array2d) =>
     mapIndexes((x) =>
-      mapIndexes((y) =>
-        cb(x, y), array2d[x]), array2d));
+      mapIndexes((y) => cb(x, y), array2d[x]), array2d));
 
 export const printNewLine =
   partial(log, ['\n']);
 
-export const makeArray =
+export const createFilledArray =
   (length, initValue) =>
     fill(0, length, initValue, new Array(length));
-
-// A -> B -> (B, A)
-export const pairWith = curry(
-  (a, b) => [b, a]);
