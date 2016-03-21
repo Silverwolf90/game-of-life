@@ -22,10 +22,10 @@ export const mapIndexes = curry(
   (cb, array) =>
     map(cb, indexes(array)));
 
-export const mapIndexes2d = curry(
+export const mapWithIndexes2d = curry(
   (cb, array2d) =>
     mapIndexes((x) =>
-      mapIndexes((y) => cb(x, y), array2d[x]), array2d));
+      mapIndexes((y) => cb(array2d[x][y], x, y), array2d[x]), array2d));
 
 export const printNewLine =
   partial(log, ['\n']);

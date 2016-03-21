@@ -1,8 +1,7 @@
 import {
-  size, map, flow, filter, forEach, constant, getOr,
-  range, curry, spread, find, over, join,
+  size, map, flow, filter, forEach, constant, range, curry, find, join, getOr,
 } from 'lodash/fp';
-import { mapIndexes2d, log, printNewLine, createFilledArray } from './util';
+import { mapWithIndexes2d, log, printNewLine, createFilledArray } from './util';
 import { applyRules } from './rule';
 import { isAlive, getCellStateChar, ALIVE, DEAD } from './cellState';
 
@@ -60,10 +59,14 @@ const boardToArray2d =
   (board) =>
     map('cellStates', board.columns);
 
-const mapBoardIndexes = curry(
-  (cb, board) => flow(
+const mapBoard = curry(
+  (callback, board) => flow(
     boardToArray2d,
-    mapIndexes2d(cb),
+    mapWithIndexes2d((cellState, x, y) => {
+      const cellPosition = CellPosition(x, y);
+      const liveNeighbors = countLiveNeighbors(board, cellPosition);
+      return callback({ cellState, cellPosition, liveNeighbors });
+    }),
     map(Column),
     Board
   )(board));
@@ -80,29 +83,22 @@ const emptyBoard = curry(
 export const initBoard = curry(
   (seed, dimensions) => flow(
     emptyBoard,
-    mapBoardIndexes(flow(
-      CellPosition,
-      cellPosition => find(cellPosition, seed) ? ALIVE : DEAD
-    ))
+    mapBoard(({ cellPosition }) =>
+      find(cellPosition, seed) ? ALIVE : DEAD)
   )(dimensions));
 
 // [Rule] -> Board -> Board
 export const generateBoard = curry(
   (rules, board) =>
-    mapBoardIndexes(flow(
-      CellPosition,
-      over([getCellState(board), countLiveNeighbors(board)]),
-      spread(applyRules(rules))
-    ), board));
+    mapBoard(({ cellState, liveNeighbors }) =>
+      applyRules(rules, cellState, liveNeighbors),
+      board));
 
 // String -> String -> Board -> Board
 export const printBoard = curry(
   (aliveChar, deadChar, board) => flow(
-    mapBoardIndexes(flow(
-      CellPosition,
-      getCellState(board),
-      getCellStateChar(aliveChar, deadChar)
-    )),
+    mapBoard(({ cellState }) =>
+      getCellStateChar(aliveChar, deadChar, cellState)),
     boardToArray2d,
     forEach(flow(join(' '), log)),
     printNewLine,
