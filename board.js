@@ -72,7 +72,7 @@ const mapBoard = curry(
   )(board));
 
 // [CellPosition] -> (Int, Int) -> Board
-const emptyBoard = curry(
+const createEmptyBoard = curry(
   ({ columns, rows }) => flow(
     range(0),
     map(() => Column(createFilledArray(rows, DEAD))),
@@ -82,7 +82,7 @@ const emptyBoard = curry(
 // [CellPosition] -> (Int, Int) -> Board
 export const initBoard = curry(
   (seed, dimensions) => flow(
-    emptyBoard,
+    createEmptyBoard,
     mapBoard(({ cellPosition }) =>
       find(cellPosition, seed) ? ALIVE : DEAD)
   )(dimensions));
