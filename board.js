@@ -98,7 +98,7 @@ export const generateBoard = curry(
 export const printBoard = curry(
   (aliveChar, deadChar, board) => flow(
     mapBoard(({ cellState }) =>
-      getCellStateChar(aliveChar, deadChar, cellState)),
+      cellState === ALIVE ? aliveChar : deadChar),
     boardToArray2d,
     forEach(flow(join(' '), log)),
     printNewLine,
