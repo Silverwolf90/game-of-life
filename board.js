@@ -1,5 +1,5 @@
 import {
-  size, map, flow, filter, forEach, constant, range, curry, find, join, getOr,
+  size, map, flow, filter, constant, range, curry, find, join, getOr, forEach,
 } from 'lodash/fp';
 import { mapWithIndexes2d, log, printNewLine, createFilledArray } from './util';
 import { applyRules } from './rule';
@@ -31,7 +31,6 @@ const cellStatePath =
   ({ column, row }) =>
     ['columns', column, 'cellStates', row];
 
-// Board -> CellPosition -> CellState
 const getCellState = curry(
   (board, cellPosition) =>
     getOr(DEAD, cellStatePath(cellPosition), board));
@@ -40,14 +39,12 @@ const addVectorToCellPosition = curry(
   (cellPosition, [x, y]) =>
     CellPosition(cellPosition.column + x, cellPosition.row + y));
 
-// Board -> CellPosition -> [CellState]
 const getNeighborStates = curry(
   (board, cellPosition) => flow(
     map(addVectorToCellPosition(cellPosition)),
     map(getCellState(board))
   )(neighborVectors));
 
-// Board -> CellPosition -> Number
 const countLiveNeighbors = curry(
   (board, cellPosition) => flow(
     getNeighborStates(board),
@@ -71,7 +68,6 @@ const mapBoard = curry(
     Board
   )(board));
 
-// [CellPosition] -> (Int, Int) -> Board
 const createEmptyBoard = curry(
   ({ columns, rows }) => flow(
     range(0),
@@ -79,7 +75,6 @@ const createEmptyBoard = curry(
     Board
   )(columns));
 
-// [CellPosition] -> (Int, Int) -> Board
 export const initBoard = curry(
   (seed, dimensions) => flow(
     createEmptyBoard,
@@ -87,14 +82,12 @@ export const initBoard = curry(
       find(cellPosition, seed) ? ALIVE : DEAD)
   )(dimensions));
 
-// [Rule] -> Board -> Board
 export const generateBoard = curry(
   (rules, board) =>
     mapBoard(({ cellState, liveNeighbors }) =>
       applyRules(rules, cellState, liveNeighbors),
       board));
 
-// String -> String -> Board -> Board
 export const printBoard = curry(
   (aliveChar, deadChar, board) => flow(
     mapBoard(({ cellState }) =>

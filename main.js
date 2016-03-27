@@ -1,4 +1,6 @@
-import _, { map, reduce, lt, gt, eq, range, flow, spread, unary } from 'lodash/fp';
+import _, {
+  map, reduce, lt, gt, eq, range, flow, spread, unary,
+} from 'lodash/fp';
 import { generateBoard, initBoard, printBoard, CellPosition } from './board';
 import { ALIVE, DEAD } from './cellState';
 import { Rule } from './rule';
