@@ -27,6 +27,12 @@ const neighborVectors = [
   [-1, +1], [0, +1], [+1, +1],
 ];
 
+const mapNeighborCellPositions = curry(
+  (callback, cellPosition) =>
+    map(
+      flow(addVectorToCellPosition(cellPosition), callback),
+      neighborVectors));
+
 const cellStatePath =
   ({ column, row }) =>
     ['columns', column, 'cellStates', row];
@@ -39,15 +45,9 @@ const addVectorToCellPosition = curry(
   (cellPosition, [x, y]) =>
     CellPosition(cellPosition.column + x, cellPosition.row + y));
 
-const getNeighborStates = curry(
-  (board, cellPosition) => flow(
-    map(addVectorToCellPosition(cellPosition)),
-    map(getCellState(board))
-  )(neighborVectors));
-
 const countLiveNeighbors = curry(
   (board, cellPosition) => flow(
-    getNeighborStates(board),
+    mapNeighborCellPositions(getCellState(board)),
     filter(isAlive),
     size
   )(cellPosition));
